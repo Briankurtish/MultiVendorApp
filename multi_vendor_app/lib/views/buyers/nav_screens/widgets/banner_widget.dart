@@ -1,29 +1,56 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class BannerWidget extends StatelessWidget {
-  const BannerWidget({super.key});
+class BannerWidget extends StatefulWidget {
+  @override
+  State<BannerWidget> createState() => _BannerWidgetState();
+}
+
+class _BannerWidgetState extends State<BannerWidget> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final List _bannerImage = [];
+
+  getBanners() {
+    return _firestore
+        .collection('banners')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          _bannerImage.add(doc['image']);
+        });
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getBanners();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
-        height: 140,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          color: Colors.green.shade900,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: PageView(
-          children: [
-            Center(child: Text("Banner 1")),
-            Center(child: Text("Banner 2")),
-            Center(child: Text("Banner 3")),
-            Text("Banner 4"),
-            Text("Banner 5"),
-          ],
-        ),
-      ),
+          height: 140,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.green.shade900,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: PageView.builder(
+                itemCount: _bannerImage.length,
+                itemBuilder: (context, index) {
+                  return Image.network(
+                    _bannerImage[index],
+                    fit: BoxFit.cover,
+                  );
+                }),
+          )),
     );
   }
 }
