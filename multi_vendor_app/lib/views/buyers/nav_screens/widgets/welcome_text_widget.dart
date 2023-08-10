@@ -8,20 +8,24 @@ class WelcomeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          "Howdy, What are you\nLooking for? 👀",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-        Container(
-          child: SvgPicture.asset(
-            'assets/icons/cart.svg',
-            width: 20,
+    return Padding(
+      padding: EdgeInsets.only(
+          top: MediaQuery.of(context).padding.top, left: 25, right: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Howdy, What are you\nLooking for? 👀",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
-        ),
-      ],
+          Container(
+            child: SvgPicture.asset(
+              'assets/icons/cart.svg',
+              width: 20,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
