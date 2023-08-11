@@ -21,11 +21,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   late String password;
 
+  bool _isLoading = false;
+
   _signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
     if (_formKey.currentState!.validate()) {
-      await _authController.signUpUsers(email, fullName, phoneNumber, password);
+      await _authController
+          .signUpUsers(email, fullName, phoneNumber, password)
+          .whenComplete(() {
+        setState(() {
+          _formKey.currentState!.reset();
+          _isLoading = false;
+        });
+      });
       return showSnack(context, "Account Registration Successful!!");
     } else {
+      setState(() {
+        _isLoading = false;
+      });
       return showSnack(context, "Please Fields must not be empty");
     }
   }
@@ -105,6 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: TextFormField(
+                    obscureText: true,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Password is required";
@@ -132,15 +148,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Center(
-                      child: Text(
-                        "Register",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2,
-                        ),
-                      ),
+                      child: _isLoading
+                          ? CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : Text(
+                              "Register",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                              ),
+                            ),
                     ),
                   ),
                 ),
