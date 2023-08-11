@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'views/buyers/auth/register_screen.dart';
 import 'views/buyers/main_screen.dart';
 
 void main() async {
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Signika-Bold',
       ),
-      home: MainScreen(),
+      home: RegisterScreen(),
     );
   }
 }

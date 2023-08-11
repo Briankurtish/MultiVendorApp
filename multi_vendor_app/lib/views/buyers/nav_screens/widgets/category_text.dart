@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CategoryText extends StatelessWidget {
-  final List<String> _categorylabel = ['food', 'vegetable', 'phones', 'shoes'];
+  final List<String> _categorylabel = [
+    'food',
+    'vegetable',
+    'phones',
+    'shoes',
+    'gowns',
+    'laptops'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +33,18 @@ class CategoryText extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ActionChip(
-                              label: Text(
-                            _categorylabel[index],
-                            style: TextStyle(color: Colors.white),
-                          )),
+                              backgroundColor: Colors.green.shade800,
+                              onPressed: () {},
+                              label: Center(
+                                child: Text(
+                                  _categorylabel[index],
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )),
                         );
                       }),
                 ),
