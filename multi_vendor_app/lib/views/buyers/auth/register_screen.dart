@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_app/controllers/auth_controller.dart';
+import 'package:multi_vendor_app/utils/show_snackbar.dart';
 import 'package:multi_vendor_app/views/buyers/auth/login_screen.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final AuthController _authController = AuthController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   late String email;
+
   late String fullName;
+
   late String phoneNumber;
+
   late String password;
 
   _signUpUser() async {
     if (_formKey.currentState!.validate()) {
       await _authController.signUpUsers(email, fullName, phoneNumber, password);
+      return showSnack(context, "Account Registration Successful!!");
     } else {
-      print("Wrong Inputs");
+      return showSnack(context, "Please Fields must not be empty");
     }
   }
 
@@ -127,7 +138,7 @@ class RegisterScreen extends StatelessWidget {
                           color: Colors.white,
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
-                          letterSpacing: 4,
+                          letterSpacing: 2,
                         ),
                       ),
                     ),
