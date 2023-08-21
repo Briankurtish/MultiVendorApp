@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_app/controllers/auth_controller.dart';
+import 'package:multi_vendor_app/utils/show_snackbar.dart';
 import 'package:multi_vendor_app/views/buyers/auth/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -8,8 +10,18 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthController _authController = AuthController();
   late String email;
   late String password;
+
+  _loginUsers() async {
+    if (_formKey.currentState!.validate()) {
+      await _authController.loginUsers(email, password);
+      return showSnack(context, 'Logged in Successfully');
+    } else {
+      return showSnack(context, 'Please fields must not be empty');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,21 +78,26 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 20,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width - 40,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.green.shade800,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
+              InkWell(
+                onTap: () {
+                  _loginUsers();
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade800,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
                     ),
                   ),
                 ),
