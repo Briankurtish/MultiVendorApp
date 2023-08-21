@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor_app/controllers/auth_controller.dart';
 import 'package:multi_vendor_app/utils/show_snackbar.dart';
 import 'package:multi_vendor_app/views/buyers/auth/login_screen.dart';
@@ -21,6 +24,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late String phoneNumber;
 
   late String password;
+
+  Uint8List? _image;
 
   bool _isLoading = false;
 
@@ -46,6 +51,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  selectGalleryImage() async {
+    Uint8List im = await _authController.pickProfileImage(ImageSource.gallery);
+
+    setState(() {
+      _image = im;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,20 +75,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 Stack(
                   children: [
-                    CircleAvatar(
-                      radius: 64,
-                      backgroundColor: Colors.green.shade800,
-                    ),
+                    _image != null
+                        ? CircleAvatar(
+                            radius: 64,
+                            backgroundColor: Colors.green.shade800,
+                            backgroundImage: MemoryImage(_image!),
+                          )
+                        : CircleAvatar(
+                            radius: 64,
+                            backgroundColor: Colors.green.shade800,
+                            backgroundImage:
+                                AssetImage('assets/icons/profileImage.png'),
+                          ),
                     Positioned(
                       left: 32,
                       top: 32,
                       right: 32,
                       bottom: 32,
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          selectGalleryImage();
+                        },
                         icon: Icon(
                           CupertinoIcons.photo,
-                          color: Colors.white,
+                          color: Colors.yellow.shade800,
                         ),
                       ),
                     ),
