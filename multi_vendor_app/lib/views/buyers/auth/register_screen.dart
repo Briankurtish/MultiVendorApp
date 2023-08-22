@@ -1,10 +1,13 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor_app/controllers/auth_controller.dart';
 import 'package:multi_vendor_app/utils/show_snackbar.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:multi_vendor_app/views/buyers/auth/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -14,20 +17,45 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final AuthController _authController = AuthController();
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   late String email;
-
   late String fullName;
-
   late String phoneNumber;
-
   late String password;
-
   Uint8List? _image;
 
   bool _isLoading = false;
+
+  // _uploadProfileToStorage(dynamic image) async {
+  //   Reference ref = _storage.ref().child('ProfileImages');
+
+  //   UploadTask uploadTask = ref.putData(image);
+
+  //   TaskSnapshot snapshot = await uploadTask;
+  //   String downloadUrl = await snapshot.ref.getDownloadURL();
+
+  //   return downloadUrl;
+  // }
+
+  // uploadToFirestore() async {
+  //   EasyLoading.show();
+  //   if (_image != null) {
+  //     String imageUrl = await _uploadProfileToStorage(_image);
+
+  //     await _firestore.collection('ProfileImages').doc().set({
+  //       'image': imageUrl,
+  //     }).whenComplete(() {
+  //       EasyLoading.dismiss();
+
+  //       setState(() {
+  //         _image = null;
+  //       });
+  //     });
+  //   }
+  // }
 
   _signUpUser() async {
     setState(() {
